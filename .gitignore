@@ -2,6 +2,7 @@
 Thumbs.db
 .env
 .env.*
+.idea/
 logs/
 temp/
 archive/
