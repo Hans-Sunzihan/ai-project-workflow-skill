@@ -1,0 +1,32 @@
+interface:
+  display_name: "AI Project Workflow"
+  short_description: "Coordinate project work through version docs, process docs, code intelligence, review, and handoff."
+  default_prompt: "Use workspace files as the source of truth. Read AGENTS.md, docs/project, docs/process, and docs/visions when relevant. For version work, docs updates, review, or handoff, choose the right layer before acting."
+
+context:
+  include:
+    - SKILL.md
+    - references/trigger-examples.md
+    - references/code-intelligence.md
+    - references/review-engine.md
+    - docs/visions/**/README.md
+    - docs/process/index.md
+    - docs/process/boundaries.md
+    - docs/process/code-style-quickcheck.md
+    - docs/project/index.md
+    - docs/project/modules.md
+
+  exclude:
+    - "**/*.human.md"
+    - "**/*.notes.md"
+    - "**/archive/**"
+    - "**/logs/**"
+    - "**/temp/**"
+    - "**/.env"
+    - "**/.env.*"
+
+  priority:
+    - visions
+    - process
+    - project
+    - references
