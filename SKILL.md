@@ -1,6 +1,7 @@
 ---
 name: ai-project-workflow
 description: "Use for project workflow, code intelligence, diff impact analysis, review, version documentation, handoff, and multi-session coordination in a software workspace."
+license: MIT-0
 ---
 
 # AI Project Workflow

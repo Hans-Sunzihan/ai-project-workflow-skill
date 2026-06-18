@@ -1,6 +1,7 @@
 ---
 name: ai-project-workflow-zh
 description: "用于软件项目 workspace 中的项目工作流、代码理解、diff 影响面分析、review、版本文档、交接和多 session 协同。"
+license: MIT-0
 ---
 
 # AI 项目工作流

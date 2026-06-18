@@ -64,4 +64,8 @@ docs/
 
 ## 许可证
 
-MIT
+MIT-0 — 免费使用、修改、分发，无需署名。
+
+## 致谢
+
+本项目在工作流理念上参考了 [DevTaskFlow](https://github.com/cwyhkyochen-a11y/devtaskflow) 的一些观点，并结合通用 AI coding skill 场景重新整理为独立实现。
