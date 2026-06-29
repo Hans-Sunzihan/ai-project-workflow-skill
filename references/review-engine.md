@@ -9,6 +9,7 @@ This layer turns review into a structured, risk-scored, diff-anchored process.
 - Actionable findings include file and line references.
 - Say what was not verified.
 - Do not approve a change with unresolved blocking findings.
+- Persist review reports only when the user asks for durable output, the review is for release sealing, or the diff spans modules/repositories. Daily reviews default to inline output.
 
 ---
 
@@ -230,3 +231,4 @@ Use this shape for non-trivial reviews.
 - Sort findings by severity: P0, P1, P2.
 - If no issues are found, say "No blocking findings found" and list residual risks or unverified items.
 - For release-sealing or cross-module review, persist the report under the relevant version docs when the user wants durable output.
+- For routine reviews, keep the report inline unless the user explicitly asks to write it to project docs.

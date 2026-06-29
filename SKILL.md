@@ -31,6 +31,24 @@ When this skill triggers, read the available files in this order. Skip missing f
 7. Repo-local rules for touched code, such as `AGENTS.md`, `CLAUDE.md`, or language-specific standards.
 8. For code changes, read `docs/process/code-style-quickcheck.md` if it exists.
 
+## Functional Fidelity First
+
+This skill is a full project-agent workflow, not a lightweight shortcut. Token savings are useful only when they do not weaken project execution.
+
+- Do not skip workspace rules, the active or target version README, repo-local rules, or code-style quickchecks just to save tokens.
+- If "read less" conflicts with accurately understanding the project, prefer accuracy and read the needed source files.
+- Keep the three-layer model, version anchoring, durable docs, review flow, handoff flow, and local code rules intact.
+- The goal is stable project execution, not extreme token minimization.
+
+## Handoff Reading Discipline
+
+`session-handoff-*.md` files are important for long work and session handoff, but they are not a startup bundle.
+
+- On startup, read the active or target version README and its `Session Handoff` index when present. Do not open every `session-handoff-*.md` by default.
+- Open a handoff file only when the current task matches its module, date, keyword, risk, or when the README explicitly points to it.
+- Treat old handoff files as historical evidence. Before answering current progress or making changes, cross-check with the active README, current code or diff, and the newest relevant handoff.
+- If a handoff conflicts with current code or newer version notes, treat the newer checked source as authoritative and call out the stale handoff.
+
 ## Core Principle
 
 Layer 2 and Layer 3 are specialized workflow engines documented under `references/`.
@@ -117,6 +135,7 @@ Use `references/code-intelligence.md` for:
 
 - Read source first, infer second. Mark inferred conclusions clearly.
 - Output durable artifacts under `docs/project/`.
+- Check existing artifacts such as `docs/project/system-map.md`, `docs/project/modules.md`, `docs/project/api-index/`, and the target version README before rebuilding context from scratch.
 - Refresh only the slice touched by the current task.
 - Mark uncertain items as "To confirm".
 - Respect existing module boundaries and high-risk area definitions.
@@ -165,6 +184,13 @@ If asked to hand off to another session, write a concise handoff unless the user
 - Verification status
 
 When Layer 2 or Layer 3 produced artifacts, reference them so the next session can continue without re-deriving context.
+
+### When to Persist Handoff
+
+- Persist a handoff file only when the user explicitly asks to "persist handoff", "write the handoff to docs", "update handoff docs", or equivalent.
+- For small changes, prefer updating the target version README instead of creating a new handoff file.
+- Keep persisted handoff files narrow: one session, one phase, one clear next-step set.
+- When writing a persisted handoff, place it in the relevant version directory and update the version README's `Session Handoff` index if that structure exists.
 
 ## References
 

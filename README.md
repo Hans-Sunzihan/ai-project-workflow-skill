@@ -71,6 +71,19 @@ docs/
 
 把本仓库作为 skill 引用到你的 AI 开发工具中。当请求涉及版本推进、文档归档、代码理解、review 或 handoff 时，agent 会读取 `SKILL.md` 并根据任务形态选择合适层级。
 
+建议在目标项目的全局 agent 规则（例如 `AGENTS.md`、`CLAUDE.md` 或团队约定的 rules 文件）中补充：
+
+- 公共事实源：agent 不依赖单次对话记忆，先读取 workspace 文档恢复上下文。
+- skill 触发条件：版本工作、文档归档、review、handoff、系统代码理解、影响面分析等任务触发 `ai-project-workflow`。
+- 启动读取顺序：`AGENTS.md -> docs/README.md -> docs/project/index.md -> docs/process/index.md -> docs/visions/README.md -> 目标版本 README -> repo-local rules -> code-style quickcheck`。
+- 功能保真优先：不能为了省 token 跳过 workspace 规则、版本 README、repo-local rules 或代码风格自查；少读和准确理解冲突时，优先准确理解。
+- 三层路由：Layer 1 负责版本、文档、handoff；Layer 2 负责 system-map、module-map、api-index、diff analyzer；Layer 3 负责 diff-based review、风险评分和结构化 review。
+- 按需分层：默认先用 Layer 1；只有系统/模块/API 理解、跨模块/跨仓库、接口契约或影响分析时加 Layer 2；只有 review、封版、高风险区或较大 diff 时加 Layer 3。
+- handoff 读取纪律：先读目标版本 README 的 `Session Handoff` 索引，只打开与当前任务相关的 `session-handoff-*.md`，不默认全量读取。
+- handoff 写入规则：用户明确要求“交接落库”“更新交接文档”时，写入目标版本目录并更新 README 索引；小改动优先更新版本 README，不必每次新建 handoff。
+- 文档落点：长期事实写 `docs/project`，过程规则和踩坑写 `docs/process`，版本范围、实施、验证、封版和交接写 `docs/visions`。
+- 代码边界：进入具体仓库前读取该仓库规则；保持改动局部化，不做无关重构、批量格式化或目录搬迁。
+
 ## 许可证
 
 MIT-0 — 免费使用、修改、分发，无需署名。

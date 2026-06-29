@@ -9,6 +9,7 @@ Use it only when the task needs system, module, API, dependency, or impact under
 - Read code first, infer second.
 - Mark inferred or uncertain conclusions as "To confirm".
 - Produce durable artifacts under `docs/project/`.
+- Check existing artifacts first: `docs/project/system-map.md`, `docs/project/modules.md`, `docs/project/api-index/`, and the target version README. Reuse current evidence before deriving the same context again.
 - Refresh only the relevant slice of the system.
 - Respect existing boundaries documented in `docs/project/modules.md` and `docs/process/boundaries.md`.
 
@@ -148,6 +149,8 @@ Answer: "What is the full chain for this API or public contract?"
 4. Trace storage or external API calls.
 5. Summarize in `docs/project/api-index/<module>.md`.
 
+Build `api-index` by module or version slice. Do not index every API in the workspace for a local contract question.
+
 ### Output Template
 
 ```markdown
@@ -181,6 +184,7 @@ Answer: "What is the full chain for this API or public contract?"
 - Path, input, output, auth, error code, or storage behavior changes.
 - A new public endpoint or contract is added.
 - A review involves contract risk.
+- The user explicitly asks to map a module's public API.
 
 ---
 
@@ -264,3 +268,24 @@ Changed: ExampleService#create
 - Before cross-module or cross-repository changes.
 - Before release sealing.
 - When the user asks about impact or risk.
+
+---
+
+## Relationship to Other Layers
+
+| Upstream | This layer | Downstream |
+| --- | --- | --- |
+| Layer 1 defines version scope | Layer 2 creates or refreshes system-map, module-map, api-index, and diff analysis | Layer 3 uses the impact context during review |
+| `docs/process/boundaries.md` defines high-risk areas | Layer 2 marks high-risk points in diff analysis | Layer 3 cites those points in risk scoring |
+| Existing `docs/project/modules.md` provides the module sketch | Layer 2 refreshes only the touched module slice | The refreshed slice becomes evidence for later sessions |
+
+## Anti-Patterns
+
+- Do not generate system maps from memory without reading source files.
+- Do not write inferred or uncertain facts as confirmed truth.
+- Do not regenerate the whole system map for a one-file fix.
+- Do not restart from scratch when a current system-map, module-map, api-index, or version README already covers the needed slice.
+- Do not leave generated api-index content only in chat when the task expects durable project docs.
+- Do not create a workspace-wide api-index for a local endpoint or contract question.
+- Do not run diff analysis from `git diff --stat` alone; read the concrete diff and full files where needed.
+- Do not skip reverse-tracing consumers of changed public methods, schemas, or data stores.

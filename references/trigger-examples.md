@@ -39,5 +39,6 @@ Use `ai-project-workflow` for requests like the examples below.
 
 - Tiny one-off commands that do not touch project state.
 - Pure implementation tasks with a clear local scope and no need for durable docs.
+- Reading every `session-handoff-*.md` just because handoff files exist. Read the active or target version README index first, then open only the relevant handoff files.
 - Local machine setup or environment-specific automation unless the project docs define that flow.
 - Batch git staging or release publishing unless the user explicitly asks this skill to coordinate the documentation side.
