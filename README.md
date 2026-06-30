@@ -1,6 +1,7 @@
 # AI Project Workflow Skill
+### 把 AI coding 从“单次对话记忆”升级为“基于 workspace 公共事实源的可交接工程协作”。
 
-一个可公开复用的 AI coding 工作流 skill，用 workspace 文件而不是单次对话记忆来对齐 Codex、Claude、Trae 等 AI agent 的项目执行方式。
+一个可复用的 AI coding 工作流 skill，用 workspace 文件而不是单次对话记忆来对齐 Codex、Claude Code、Trae 等 AI agent 的项目执行方式。
 
 它适合已经进入真实工程复杂度的项目：需求会跨 session 延续，代码改动需要版本边界，review 需要证据，部署前要关心接口契约、鉴权、账单、DDL、配置、回滚和上线顺序。这个 skill 的目标不是让 agent “多读一点文档”，而是让 agent 每次开工都能从仓库里的公共事实源恢复上下文，并把新的事实继续沉淀回仓库。
 
