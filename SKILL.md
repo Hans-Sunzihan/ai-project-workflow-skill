@@ -95,6 +95,7 @@ If uncertain:
 - If the user names a version, use that version document as the scope anchor.
 - If no version is named, inspect `docs/visions/README.md` for the active version.
 - If no suitable version exists and the task is more than a tiny one-off, create or propose a new version directory with `README.md` before implementation.
+- For new version directories, prefer the naming pattern `v0.x-business-english-short-name`, for example `v0.2-team-plugin-api`. This is a convention, not a hard requirement; the durable requirement is still one version per directory plus a `README.md`.
 - If the task is a review, follow Layer 3 in `references/review-engine.md`.
 - If the task is a handoff, follow `docs/process/handoff.md` if it exists, otherwise use the handoff format below.
 - If the task changes long-lived project facts, update `docs/project`.

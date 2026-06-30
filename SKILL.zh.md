@@ -83,6 +83,7 @@ Layer 2 和 Layer 3 是专门的工作流引擎，细节在 `references/` 中。
 - 如果用户指定版本，以该版本文档作为范围锚点。
 - 如果未指定版本，检查 `docs/visions/README.md` 中的活跃版本。
 - 如果没有合适版本且任务不只是一次性小修，在实现前创建或建议新的版本目录和 `README.md`。
+- 新建版本目录时，建议使用 `v0.x-业务英文短名`，例如 `v0.2-team-plugin-api`。这是约定，不是强制要求；硬性骨架仍然是一个版本一个目录，并包含 `README.md`。
 - 如果任务是 review，遵循 `references/review-engine.md`。
 - 如果任务是 handoff，优先遵循 `docs/process/handoff.md`；不存在时使用本文末尾交接格式。
 - 如果任务改变长期项目事实，更新 `docs/project`。

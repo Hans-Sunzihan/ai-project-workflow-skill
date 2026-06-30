@@ -1,23 +1,25 @@
-# ai-project-workflow-skill
+# AI Project Workflow Skill
 
-一个可公开复用的 AI project workflow skill，用 workspace 文件而不是对话记忆来对齐 Codex、Claude、Trae 等 AI agent 的工作方式。
+一个可公开复用的 AI coding 工作流 skill，用 workspace 文件而不是单次对话记忆来对齐 Codex、Claude、Trae 等 AI agent 的项目执行方式。
 
-它适用于：
+它适合已经进入真实工程复杂度的项目：需求会跨 session 延续，代码改动需要版本边界，review 需要证据，部署前要关心接口契约、鉴权、账单、DDL、配置、回滚和上线顺序。这个 skill 的目标不是让 agent “多读一点文档”，而是让 agent 每次开工都能从仓库里的公共事实源恢复上下文，并把新的事实继续沉淀回仓库。
 
-- 按版本推进需求、修复和交付
-- 维护 `docs/project`、`docs/process`、`docs/visions` 等长期项目文档
-- 做 session handoff，让下一个 AI 或人类接手时少重新推导
-- 做代码理解、影响面分析和 diff-based review
-- 协调多 session 并行工作
+## 真实价值
 
-例如：
-- 在已有大型、多仓库项目中局部推进；
-- 先确定版本、模块边界和影响面；
-- 修改必须小而可审查；
-- 强调接口契约、账单、鉴权、DDL、部署顺序等生产风险；
-- 通过版本文档和 handoff 保存事实；
-- 对 Token 成本敏感，倾向“最小必要切片”。
-- 允许使用AI coding，但要为自己的代码负责。
+- 把 AI agent 从“靠单次聊天记忆干活”拉回到 workspace 公共事实源：`AGENTS.md`、`docs/project`、`docs/process`、`docs/visions`。
+- 把项目工作拆成 Layer 1/2/3，避免每次都做全量系统理解或重 review：不确定时默认只走 Layer 1，只有任务需要时再加 Layer 2/3。
+- 让长任务有版本锚点：连续多轮开发、修复和上线准备都落在版本 README 与窄 handoff 中，后续 session 不必凭旧印象判断进度。
+- 让改动更小、更可审查：先确定版本范围、模块边界和影响面，再实现、验证、记录，而不是一边猜上下文一边大范围改动。
+- 让 AI coding 更像工程协作：允许使用 AI 提效，但最终以代码、diff、验证记录和项目文档为准。
+
+## 适用场景
+
+- 按版本推进需求、修复和交付。
+- 维护 `docs/project`、`docs/process`、`docs/visions` 等长期项目文档。
+- 做 session handoff，让下一个 AI 或人类接手时少重新推导。
+- 做系统代码理解、影响面分析和 diff-based review。
+- 协调多 session 并行工作，并保持目标、边界和交接清晰。
+- 在大型、多仓库或生产风险较高的项目中局部推进。
 
 ## 目录结构
 
@@ -44,6 +46,16 @@ ai-project-workflow-skill/
 | Local and incremental | 只刷新当前任务需要的文档和代码切片 |
 | Diff anchored review | Review 从实际 diff 出发，按风险和证据输出 |
 
+## 三层工作流
+
+| Layer | 名称 | 解决的问题 | 主要产物 |
+| --- | --- | --- | --- |
+| Layer 1 | Project Workflow | 版本推进、文档落点、任务边界、交接 | 版本 README、handoff、过程记录 |
+| Layer 2 | Code Intelligence | 系统/模块/API 理解、影响面分析 | system-map、module-map、api-index、diff analyzer |
+| Layer 3 | Review Engine | diff-based review、风险评分、封版判断 | 结构化 review、阻塞项、验证缺口 |
+
+默认先用 Layer 1。只有任务需要系统、模块、API、依赖或影响面理解时，加 Layer 2；只有任务需要 review、合并判断、风险评估、封版，或触及高风险区时，加 Layer 3。
+
 ## 推荐项目文档结构
 
 这个 skill 假设目标项目可以逐步沉淀如下文档。不存在时不强制创建全部内容，只在任务需要时增量补齐。
@@ -63,9 +75,11 @@ docs/
 │   └── handoff.md
 └── visions/
     ├── README.md
-    └── v0.1/
+    └── v0.2-team-plugin-api/
         └── README.md
 ```
+
+新建版本目录建议使用 `v0.x-业务英文短名`，例如 `v0.2-team-plugin-api`。这只是命名约定；核心要求仍然是一个版本一个目录，并包含 `README.md`。
 
 ## 使用方式
 
