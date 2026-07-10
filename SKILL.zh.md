@@ -1,6 +1,6 @@
 ---
 name: ai-project-workflow-zh
-description: "用于软件项目 workspace 中的项目工作流、系统代码理解、diff 影响面分析、review、版本文档、交接和多 session 协同。"
+description: "用于软件项目 workspace 中的项目工作流、需求澄清、垂直切片规划、系统代码理解、diff 影响面分析、review、版本文档、交接和多 session 协同。"
 license: MIT-0
 ---
 
@@ -12,7 +12,7 @@ license: MIT-0
 
 | 层级 | 名称 | 解决的问题 | 参考文档 |
 | --- | --- | --- | --- |
-| 1 | 项目工作流 | 如何按版本、文档、交接和任务边界推进项目 | 本文件 |
+| 1 | 项目工作流 | 如何按版本、需求澄清、垂直切片、文档和交接推进项目 | 本文件 |
 | 2 | 系统代码理解 | 如何理解系统、模块、接口链路和 diff 影响面 | `references/code-intelligence.md` |
 | 3 | Review 引擎 | 如何基于 diff、风险评分和结构化输出做 review | `references/review-engine.md` |
 
@@ -61,6 +61,7 @@ Layer 2 和 Layer 3 是专门的工作流引擎，细节在 `references/` 中。
 | 任务形态 | Layer 1 | Layer 2 | Layer 3 |
 | --- | --- | --- | --- |
 | 版本规划、文档归档、交接 | 是 | 否 | 否 |
+| 产品语义、权限、状态或验收决策存在歧义 | 是 | 按需 | 否 |
 | 单文件小 bug 修复 | 是 | 否 | 可选 |
 | 跨模块新功能 | 是 | 是 | 是 |
 | “帮我理解这个系统/模块” | 可选 | 是 | 否 |
@@ -84,6 +85,8 @@ Layer 2 和 Layer 3 是专门的工作流引擎，细节在 `references/` 中。
 - 如果未指定版本，检查 `docs/visions/README.md` 中的活跃版本。
 - 如果没有合适版本且任务不只是一次性小修，在实现前创建或建议新的版本目录和 `README.md`。
 - 新建版本目录时，建议使用 `v0.x-业务英文短名`，例如 `v0.2-team-plugin-api`。这是约定，不是强制要求；硬性骨架仍然是一个版本一个目录，并包含 `README.md`。
+- 只有产品、权限、状态、契约或验收决策会改变方案时，才开启澄清门。事实由 Agent 自己查；决策一次问一个并给出推荐答案，确认后继续。清晰、低风险的任务跳过。
+- 多步骤工作按可独立验证的垂直切片规划并标明阻塞关系；每个切片贯穿相关前端、API、数据或权限边界，交付端到端行为。除非用户另有要求，计划写在版本 README 中。
 - 如果任务是 review，遵循 `references/review-engine.md`。
 - 如果任务是 handoff，优先遵循 `docs/process/handoff.md`；不存在时使用本文末尾交接格式。
 - 如果任务改变长期项目事实，更新 `docs/project`。
@@ -138,7 +141,7 @@ Layer 2 和 Layer 3 是专门的工作流引擎，细节在 `references/` 中。
 使用 `references/review-engine.md` 执行：
 
 - diff-based review
-- 双视角 review
+- Spec / Standards 双轴与 Architecture / Implementation 双视角 review
 - 风险评分
 - 结构化输出
 
@@ -152,6 +155,7 @@ Layer 2 和 Layer 3 是专门的工作流引擎，细节在 `references/` 中。
 ### 原则
 
 - 从 `git diff` 开始。
+- 固定需求源和工程规范源；分开检查 Spec 与 Standards，并用 Architecture 与 Implementation 作为视角。日常 review 只深入相关面，严格、封版或跨模块 review 使用完整矩阵。
 - Findings 优先，并按严重度排序。
 - 可执行问题必须带文件和行号。
 - 说明未验证项。

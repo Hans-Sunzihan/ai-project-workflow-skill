@@ -51,9 +51,9 @@ ai-project-workflow-skill/
 
 | Layer | 名称 | 解决的问题 | 主要产物 |
 | --- | --- | --- | --- |
-| Layer 1 | Project Workflow | 版本推进、文档落点、任务边界、交接 | 版本 README、handoff、过程记录 |
+| Layer 1 | Project Workflow | 版本推进、必要澄清、垂直切片、文档落点、交接 | 版本 README、实施顺序、handoff、过程记录 |
 | Layer 2 | Code Intelligence | 系统/模块/API 理解、影响面分析 | system-map、module-map、api-index、diff analyzer |
-| Layer 3 | Review Engine | diff-based review、风险评分、封版判断 | 结构化 review、阻塞项、验证缺口 |
+| Layer 3 | Review Engine | Spec / Standards 双轴、Architecture / Implementation 双视角、风险评分 | 结构化 review、阻塞项、验证缺口 |
 
 默认先用 Layer 1。只有任务需要系统、模块、API、依赖或影响面理解时，加 Layer 2；只有任务需要 review、合并判断、风险评估、封版，或触及高风险区时，加 Layer 3。
 
@@ -94,6 +94,9 @@ docs/
 - 功能保真优先：不能为了省 token 跳过 workspace 规则、版本 README、repo-local rules 或代码风格自查；少读和准确理解冲突时，优先准确理解。
 - 三层路由：Layer 1 负责版本、文档、handoff；Layer 2 负责 system-map、module-map、api-index、diff analyzer；Layer 3 负责 diff-based review、风险评分和结构化 review。
 - 按需分层：默认先用 Layer 1；只有系统/模块/API 理解、跨模块/跨仓库、接口契约或影响分析时加 Layer 2；只有 review、封版、高风险区或较大 diff 时加 Layer 3。
+- 实施前澄清：只有真实决策歧义会改变方案时才逐项确认；代码和文档能查到的事实由 agent 自己查，问题一次一个并给出推荐答案。
+- 垂直切片：多步骤需求优先按可独立验证的端到端行为拆分，并在版本 README 中记录阻塞关系和涉及的前端、API、数据、权限面。
+- Review 四检查面：分开判断 Spec 与 Standards，再按 Architecture 与 Implementation 视角检查；日常 review 按需深入，严格或封版 review 使用完整矩阵。
 - handoff 读取纪律：先读目标版本 README 的 `Session Handoff` 索引，只打开与当前任务相关的 `session-handoff-*.md`，不默认全量读取。
 - handoff 写入规则：用户明确要求“交接落库”“更新交接文档”时，写入目标版本目录并更新 README 索引；小改动优先更新版本 README，不必每次新建 handoff。
 - 文档落点：长期事实写 `docs/project`，过程规则和踩坑写 `docs/process`，版本范围、实施、验证、封版和交接写 `docs/visions`。
@@ -106,3 +109,5 @@ MIT-0 — 免费使用、修改、分发，无需署名。
 ## 致谢
 
 本项目在工作流理念上参考了 [DevTaskFlow](https://github.com/cwyhkyochen-a11y/devtaskflow) 的一些观点，并结合通用 AI coding skill 场景重新整理为独立实现。
+
+需求澄清、垂直切片和 Spec / Standards 双轴 review 的部分思路也参考了 [Matt Pocock Skills](https://github.com/mattpocock/skills)，并按本项目的 workspace 事实源和三层工作流重新实现。

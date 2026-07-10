@@ -1,6 +1,6 @@
 ---
 name: ai-project-workflow
-description: "Use for project workflow, code intelligence, diff impact analysis, review, version documentation, handoff, and multi-session coordination in a software workspace."
+description: "Use for project workflow, requirements clarification, vertical-slice planning, code intelligence, diff impact analysis, review, version documentation, handoff, and multi-session coordination in a software workspace."
 license: MIT-0
 ---
 
@@ -12,7 +12,7 @@ This skill keeps AI coding sessions aligned through workspace files instead of c
 
 | Layer | Name | Solves | Reference |
 | --- | --- | --- | --- |
-| 1 | Project Workflow | How to move a project forward by version, docs, handoff, and task boundaries | this file |
+| 1 | Project Workflow | How to move a project forward by version, clarification, vertical slices, docs, and handoff | this file |
 | 2 | Code Intelligence | How to understand a system, module, API chain, or diff impact | `references/code-intelligence.md` |
 | 3 | Review Engine | How to review changes with diff anchors, risk scoring, and structured output | `references/review-engine.md` |
 
@@ -73,6 +73,7 @@ Pick layer(s) by task shape.
 | Task shape | Layer 1 | Layer 2 | Layer 3 |
 | --- | --- | --- | --- |
 | Version planning, docs organization, handoff | yes | no | no |
+| Ambiguous product, permission, state, or acceptance decisions | yes | on demand | no |
 | Tiny single-file bug fix | yes | no | optional |
 | Cross-module feature | yes | yes | yes |
 | "Help me understand this system/module" | optional | yes | no |
@@ -96,6 +97,8 @@ If uncertain:
 - If no version is named, inspect `docs/visions/README.md` for the active version.
 - If no suitable version exists and the task is more than a tiny one-off, create or propose a new version directory with `README.md` before implementation.
 - For new version directories, prefer the naming pattern `v0.x-business-english-short-name`, for example `v0.2-team-plugin-api`. This is a convention, not a hard requirement; the durable requirement is still one version per directory plus a `README.md`.
+- Open a clarification gate only when unresolved product, permission, state, contract, or acceptance decisions could change the solution. Look up facts; ask one decision at a time with a recommendation; wait for confirmation. Skip clear, low-risk work.
+- For multi-step work, plan independently verifiable vertical slices with blockers. Each slice should deliver end-to-end behavior across relevant frontend, API, data, or permission boundaries. Keep the plan in the version README unless the user asks otherwise.
 - If the task is a review, follow Layer 3 in `references/review-engine.md`.
 - If the task is a handoff, follow `docs/process/handoff.md` if it exists, otherwise use the handoff format below.
 - If the task changes long-lived project facts, update `docs/project`.
@@ -150,7 +153,7 @@ Goal: turn review into a structured, risk-scored, diff-anchored process.
 Use `references/review-engine.md` for:
 
 - diff-based review
-- dual-perspective review
+- Spec / Standards review with Architecture / Implementation lenses
 - risk scoring
 - structured output
 
@@ -164,6 +167,7 @@ Use `references/review-engine.md` for:
 ### Layer 3 Principles
 
 - Start from `git diff`.
+- Pin spec and standards sources. Review Spec and Standards separately through Architecture and Implementation lenses; deepen only relevant checks except for strict, release, or cross-module reviews.
 - Lead with findings, ordered by severity.
 - Include file and line references for actionable findings.
 - Say what was not verified.

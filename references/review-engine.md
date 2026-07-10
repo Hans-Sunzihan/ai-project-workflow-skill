@@ -2,9 +2,18 @@
 
 This layer turns review into a structured, risk-scored, diff-anchored process.
 
+## Contents
+
+1. diff-based review
+2. two-axis, dual-lens review
+3. risk scoring
+4. structured output
+
 ## General Principles
 
 - Start from `git diff` and untracked files.
+- Pin the relevant spec sources and standards sources before judging the diff.
+- Keep Spec and Standards findings separate so one axis cannot hide failure in the other.
 - Findings come first, ordered by severity.
 - Actionable findings include file and line references.
 - Say what was not verified.
@@ -25,20 +34,22 @@ Review only the changed parts, hunk by hunk, unless the change is a full-file re
 - `git diff HEAD`
 - Untracked new files
 - Layer 2 diff analyzer report, if available
-- `docs/process/boundaries.md`, if present
-- `docs/process/code-style-quickcheck.md`, if present
+- Spec sources such as the active version README, PRD, acceptance criteria, or API contract
+- Standards sources such as `AGENTS.md`, repo-local rules, `docs/process/boundaries.md`, or `docs/process/code-style-quickcheck.md`
 
 ### Steps
 
 1. Run `git status --short` to list changes.
 2. Run `git diff HEAD` to inspect staged and unstaged changes.
 3. Read untracked new files directly.
-4. For each hunk, answer:
+4. Identify the spec and standards sources relevant to the changed slice. If either is missing, say so instead of inventing it from the diff.
+5. For each hunk, answer:
    - What changed?
    - Why does it appear to have changed?
-   - Is it correct relative to local rules and surrounding code?
-   - What side effects could it have?
-5. Record findings with severity, file, line, description, and suggested fix.
+   - Does it satisfy the spec without missing behavior or scope creep?
+   - Does it follow project standards and surrounding conventions?
+   - Are there architecture or implementation side effects?
+6. Record findings with severity, axis, lens, file, line, description, and suggested fix.
 
 ### Severity
 
@@ -73,42 +84,43 @@ Review only the changed parts, hunk by hunk, unless the change is a full-file re
 
 ---
 
-## 2. dual-perspective review
+## 2. two-axis, dual-lens review
 
 ### Goal
 
-Review the same diff from two perspectives, then merge results.
+Review delivery correctness and engineering conformance separately, then apply architecture and implementation lenses. Do not require parallel reviewers; use them only when the user requests strict independent review and parallel work is authorized.
 
-### Perspective A - Architecture
+### Axes
 
-Focus on:
+| Axis | Question | Primary sources |
+| --- | --- | --- |
+| Spec | Does the change faithfully deliver the requested behavior without omissions or scope creep? | Version README, PRD, acceptance criteria, API contract |
+| Standards | Does the change follow documented rules and established project conventions? | `AGENTS.md`, repo-local rules, boundaries, style quickcheck |
 
-- module boundaries
-- public contract consistency
-- dependency direction
-- data ownership
-- version scope
-- high-risk areas
+If no usable Spec source exists, mark the Spec axis as not verified. If no documented Standards source exists, use surrounding code only as inferred convention and label it as inferred.
 
-### Perspective B - Implementation
+### Lenses
 
-Focus on:
+| Review surface | Focus |
+| --- | --- |
+| Spec × Architecture | Intended module ownership, data ownership, contracts, and version scope |
+| Spec × Implementation | Required behavior, edge cases, acceptance criteria, and unrequested behavior |
+| Standards × Architecture | Module boundaries, dependency direction, public contracts, and consistency guarantees |
+| Standards × Implementation | Local conventions, validation, errors, security, performance, tests, and verification |
 
-- local coding conventions
-- validation and error handling
-- transaction and consistency behavior
-- security and data handling
-- performance pitfalls
-- tests and verification
+### Depth Control
+
+- Routine review: scan both axes, then deepen only the lenses implicated by the diff.
+- Strict, release-sealing, contract, or cross-module review: run the full four-surface matrix.
+- If one source is missing, do not spend tokens simulating that axis; report the verification gap.
 
 ### Merge Rules
 
 | Situation | Handling |
 | --- | --- |
-| Both perspectives find the same issue | Keep one finding, use the higher severity, mark "both perspectives" |
-| Only architecture finds it | Keep it, mark "architecture" |
-| Only implementation finds it | Keep it, mark "implementation" |
-| Perspectives disagree | Keep both notes, mark "needs discussion" |
+| More than one surface finds the same issue | Keep one finding, use the higher severity, and list all matching axes/lenses |
+| Only one surface finds an issue | Keep it with that axis and lens; do not duplicate it elsewhere |
+| Spec and Standards conflict | Keep both notes and mark "needs discussion"; do not let one silently override the other |
 
 ### Use When
 
@@ -173,13 +185,14 @@ Use this shape for non-trivial reviews.
 > Generated: yyyy-MM-dd
 > Reviewer: ai-project-workflow Layer 3
 > Scope: <repository/module/version>
-> Mode: <diff-based / dual-perspective>
+> Mode: <diff-based / full review matrix>
 
 ## 1. Findings
 
 ### [P0] <title>
 - File: <file>:<line>
-- Perspective: <architecture / implementation / both perspectives / needs discussion>
+- Axis: <spec / standards / both / needs discussion>
+- Lens: <architecture / implementation / both>
 - Problem: <description>
 - Suggestion: <fix>
 - Status: <open / fixed / accepted with rationale>
@@ -230,5 +243,6 @@ Use this shape for non-trivial reviews.
 
 - Sort findings by severity: P0, P1, P2.
 - If no issues are found, say "No blocking findings found" and list residual risks or unverified items.
+- If a Spec or Standards source was unavailable, report that axis as not verified rather than treating it as passed.
 - For release-sealing or cross-module review, persist the report under the relevant version docs when the user wants durable output.
 - For routine reviews, keep the report inline unless the user explicitly asks to write it to project docs.

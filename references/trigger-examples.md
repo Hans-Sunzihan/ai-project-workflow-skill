@@ -10,6 +10,9 @@ Use `ai-project-workflow` for requests like the examples below.
 - "Where should this note live: project, process, or visions?"
 - "Write a handoff for the next session."
 - "Split this feature across multiple sessions."
+- "Clarify the permission and state decisions before implementation."
+- "Ask me one product decision at a time and give your recommendation."
+- "Break this feature into independently verifiable vertical slices."
 - "Seal this version."
 - "Record this pitfall."
 
@@ -31,6 +34,7 @@ Use `ai-project-workflow` for requests like the examples below.
 - "Is this change risky?"
 - "Do a strict review."
 - "Use dual-perspective review."
+- "Review this against both the spec and project standards."
 - "Review before release."
 - "Can this change be merged?"
 - "Does this interface contract change look safe?"
@@ -39,6 +43,7 @@ Use `ai-project-workflow` for requests like the examples below.
 
 - Tiny one-off commands that do not touch project state.
 - Pure implementation tasks with a clear local scope and no need for durable docs.
+- Repeatedly questioning the user about facts available in code or docs, or opening a clarification gate for clear low-risk work.
 - Reading every `session-handoff-*.md` just because handoff files exist. Read the active or target version README index first, then open only the relevant handoff files.
 - Local machine setup or environment-specific automation unless the project docs define that flow.
 - Batch git staging or release publishing unless the user explicitly asks this skill to coordinate the documentation side.
