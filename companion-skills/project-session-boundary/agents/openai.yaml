@@ -1,0 +1,7 @@
+interface:
+  display_name: "Project Session Boundary"
+  short_description: "Route project session start and end requests."
+  default_prompt: "Use $project-session-boundary to start or close a project session."
+
+policy:
+  allow_implicit_invocation: true
